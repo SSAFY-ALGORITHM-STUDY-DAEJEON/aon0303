@@ -54,4 +54,60 @@ public class 정식이의_은행업무 {
 
 	}
 
+
+
+import java.io.*;
+import java.util.*;
+
+public class 정식이의_은행업무 {
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new FileReader("input.txt"));
+
+        int T = Integer.parseInt(br.readLine());
+
+        for (int tc = 1; tc <= T; tc++) {
+            char[] two = br.readLine().toCharArray();
+            char[] three = br.readLine().toCharArray();
+
+            HashSet<Long> set = new HashSet<>();
+
+            // 이진수 한 자리씩 변경
+            for (int i = 0; i < two.length; i++) {
+                two[i] = two[i] == '0' ? '1' : '0';
+
+                set.add(Long.parseLong(new String(two), 2));
+
+                // 원상복구
+                two[i] = two[i] == '0' ? '1' : '0';
+            }
+
+            long answer = -1;
+
+            // 삼진수 한 자리씩 변경
+            outer:
+            for (int i = 0; i < three.length; i++) {
+                char original = three[i];
+
+                for (char d = '0'; d <= '2'; d++) {
+                    if (d == original) continue;
+
+                    three[i] = d;
+
+                    long value = Long.parseLong(new String(three), 3);
+
+                    if (set.contains(value)) {
+                        answer = value;
+                        break outer;
+                    }
+                }
+
+                // 원상복구
+                three[i] = original;
+            }
+
+            System.out.println("#" + tc + " " + answer);
+        }
+    }
+}
 }
